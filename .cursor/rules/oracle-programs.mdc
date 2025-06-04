@@ -1,0 +1,20 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Review all documentation listed below to build, test, and deploy an Oracle Program to the SEDA Network. Please install any dependencies that are needed to work with this Oracle Program from the SEDA starter kit.
+
+Overview of Building an Oracle Program: https://docs.seda.xyz/home/for-developers/building-an-oracle-program
+
+Getting Started: Price Feed: https://docs.seda.xyz/home/for-developers/building-an-oracle-program/price-feed-example/getting-started-price-feed
+
+Testing Your Oracle Program: https://docs.seda.xyz/home/for-developers/building-an-oracle-program/price-feed-example/testing-your-oracle-program
+
+Deploying Your Oracle Program: https://docs.seda.xyz/home/for-developers/building-an-oracle-program/price-feed-example/deploying-your-oracle-program
+
+Fetching Open Data: https://docs.seda.xyz/home/for-developers/building-an-oracle-program/price-feed-example/fetching-open-data
+
+Advanced: API-key Gated Data: https://docs.seda.xyz/home/for-developers/building-an-oracle-program/price-feed-example/advanced-api-key-gated-data
+
+SEDA SDK: https://github.com/sedaprotocol/seda-sdk
