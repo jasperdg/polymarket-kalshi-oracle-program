@@ -9,6 +9,37 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "34ac096ce696dc2fcabef30516bb13c0a68a11d30131d3df6f04711467681b04"
 
 [[package]]
+name = "ctor"
+version = "0.4.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "a4735f265ba6a1188052ca32d461028a7d1125868be18e287e756019da7607b5"
+dependencies = [
+ "ctor-proc-macro",
+ "dtor",
+]
+
+[[package]]
+name = "ctor-proc-macro"
+version = "0.0.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4f211af61d8efdd104f96e57adf5e426ba1bc3ed7a4ead616e15e5881fd79c4d"
+
+[[package]]
+name = "dtor"
+version = "0.0.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "97cbdf2ad6846025e8e25df05171abfb30e3ababa12ee0a0e44b9bbe570633a8"
+dependencies = [
+ "dtor-proc-macro",
+]
+
+[[package]]
+name = "dtor-proc-macro"
+version = "0.0.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7454e41ff9012c00d53cf7f475c5e3afa3b91b7c90568495495e8d9bf47a1055"
+
+[[package]]
 name = "hex"
 version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -63,7 +94,7 @@ checksum = "6ea1a2d0a644769cc99faa24c3ad26b379b786fe7c36fd3c546254801650e6dd"
 [[package]]
 name = "seda-sdk-macros"
 version = "0.1.0"
-source = "git+https://github.com/sedaprotocol/seda-sdk?tag=rs-sdk%2Fv1.0.0-rc.3#ff0fd02f2464d2435e9f7a53da0c94d77c4515f8"
+source = "git+https://github.com/sedaprotocol/seda-sdk?tag=rs-sdk%2Fv1.0.0-rc.5#ec043b2e44c5e1ccc76df895f9cdbabae94feef4"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -72,10 +103,11 @@ dependencies = [
 
 [[package]]
 name = "seda-sdk-rs"
-version = "1.0.0-rc.3"
-source = "git+https://github.com/sedaprotocol/seda-sdk?tag=rs-sdk%2Fv1.0.0-rc.3#ff0fd02f2464d2435e9f7a53da0c94d77c4515f8"
+version = "1.0.0-rc.5"
+source = "git+https://github.com/sedaprotocol/seda-sdk?tag=rs-sdk%2Fv1.0.0-rc.5#ec043b2e44c5e1ccc76df895f9cdbabae94feef4"
 dependencies = [
  "anyhow",
+ "ctor",
  "hex",
  "seda-sdk-macros",
  "serde",
@@ -128,18 +160,18 @@ dependencies = [
 
 [[package]]
 name = "thiserror"
-version = "1.0.69"
+version = "2.0.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b6aaf5339b578ea85b50e080feb250a3e8ae8cfcdff9a461c9ec2904bc923f52"
+checksum = "567b8a2dae586314f7be2a752ec7474332959c6460e02bde30d702a66d488708"
 dependencies = [
  "thiserror-impl",
 ]
 
 [[package]]
 name = "thiserror-impl"
-version = "1.0.69"
+version = "2.0.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4fee6c4efc90059e10f81e6d42c60a18f76588c3d74cb83a0b242a2b6c7504c1"
+checksum = "7f7cf42b4507d8ea322120659672cf1b9dbb93f8f2d4ecfd6e51350ff5b17a1d"
 dependencies = [
  "proc-macro2",
  "quote",
