@@ -94,7 +94,7 @@ checksum = "6ea1a2d0a644769cc99faa24c3ad26b379b786fe7c36fd3c546254801650e6dd"
 [[package]]
 name = "seda-sdk-macros"
 version = "0.1.0"
-source = "git+https://github.com/sedaprotocol/seda-sdk?tag=rs-sdk%2Fv1.0.0-rc.5#ec043b2e44c5e1ccc76df895f9cdbabae94feef4"
+source = "git+https://github.com/sedaprotocol/seda-sdk?tag=rs-sdk%2Fv1.0.0-rc.6#1b10022691e57fb0248680c8b1375572d1395f79"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -103,8 +103,8 @@ dependencies = [
 
 [[package]]
 name = "seda-sdk-rs"
-version = "1.0.0-rc.5"
-source = "git+https://github.com/sedaprotocol/seda-sdk?tag=rs-sdk%2Fv1.0.0-rc.5#ec043b2e44c5e1ccc76df895f9cdbabae94feef4"
+version = "1.0.0-rc.6"
+source = "git+https://github.com/sedaprotocol/seda-sdk?tag=rs-sdk%2Fv1.0.0-rc.6#1b10022691e57fb0248680c8b1375572d1395f79"
 dependencies = [
  "anyhow",
  "ctor",
