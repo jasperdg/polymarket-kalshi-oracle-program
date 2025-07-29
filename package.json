@@ -20,7 +20,7 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "@seda-protocol/dev-tools": "^1.0.0",
+    "@seda-protocol/dev-tools": "^1.0.1",
     "@types/bun": "^1.2.13",
     "bignumber.js": "^9.3.0",
     "binaryen": "^123.0.0",
