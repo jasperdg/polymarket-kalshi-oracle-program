@@ -28,6 +28,9 @@ priceFeedScope
       console.log('Latest Answer:', latestAnswer.toString());
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : String(error);
-      console.error(`An error occurred while fetching the latest answer: ${errorMessage}`);
+      console.error(`Error fetching latest answer: ${errorMessage}`);
+      console.error(
+        'Most likely still processing: make sure you ran "bunx hardhat pricefeed transmit" first, then wait a few minutes.',
+      );
     }
   });

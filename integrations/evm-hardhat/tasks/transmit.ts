@@ -52,8 +52,21 @@ priceFeedScope
       const tx = await priceFeed.transmit(parsedRequestFee, parsedResultFee, parsedBatchFee, { value: totalValue });
 
       // Wait for the transaction
-      await tx.wait();
-      console.log('Transmit executed successfully.');
+      const receipt = await tx.wait();
+      if (!receipt) {
+        console.log('Transaction failed - no receipt received');
+        return;
+      }
+      console.log(`Request submitted successfully!`);
+
+      // Find request ID in event logs
+      const requestPostedLog = receipt.logs.find((log) => log.topics[0] === hre.ethers.id('RequestPosted(bytes32)'));
+      if (requestPostedLog) {
+        const requestId = requestPostedLog.topics[1];
+        console.log(`Request ID: ${requestId}`);
+      } else {
+        console.log('Transaction successful but could not extract request ID');
+      }
     } catch (error) {
       console.error('An error occurred during the transmit function:', error);
     }

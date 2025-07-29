@@ -51,8 +51,8 @@ contract PriceFeed {
             ORACLE_PROGRAM_ID, // execProgramId (Execution WASM binary ID)
             ORACLE_PROGRAM_ID, // tallyProgramId (same as execProgramId in this example)
             2000, // gasPrice (SEDA tokens per gas unit)
-            10000000000000, // execGasLimit (within uint64 range)
-            10000000000000, // tallyGasLimit (within uint64 range)
+            50000000000000, // execGasLimit (within uint64 range)
+            20000000000000, // tallyGasLimit (within uint64 range)
             1, // replicationFactor (number of required DR executors)
             bytes("eth-usdc"), // execInputs (Inputs for Execution WASM)
             hex"00", // tallyInputs
@@ -75,7 +75,7 @@ contract PriceFeed {
 
         SedaDataTypes.Result memory result = SEDA_CORE.getResult(requestId);
 
-        if (result.consensus) {
+        if (result.consensus && result.exitCode == 0) {
             return uint128(bytes16(result.result));
         }
 
