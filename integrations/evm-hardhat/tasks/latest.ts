@@ -26,8 +26,8 @@ priceFeedScope
       console.log(`\nCalling latestAnswer() on PriceFeed at ${priceFeedAddress}`);
       const latestAnswer = await priceFeed.latestAnswer();
       console.log('Latest Answer:', latestAnswer.toString());
-      // biome-ignore lint/suspicious/noExplicitAny:
-    } catch (error: any) {
-      console.error(`An error occurred while fetching the latest answer: ${error.message}`);
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error(`An error occurred while fetching the latest answer: ${errorMessage}`);
     }
   });

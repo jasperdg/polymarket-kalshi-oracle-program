@@ -1,14 +1,14 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import dotenv from 'dotenv';
-import type { Network, NetworkConfig } from 'hardhat/types';
-import { type SedaConfig, networkConfigs } from '../seda.config';
+import type { Network } from 'hardhat/types';
+import { networkConfigs, type SedaConfig } from '../seda.config';
 
 dotenv.config();
 
 /**
  * Helper function to fetch the deployed contract address from the deployment file.
- * @param network NetworkConfig object containing network details.
+ * @param network HardhatNetwork object containing network details.
  * @param contractName The full name of the contract (as stored in the deployment JSON file).
  * @returns The deployed contract address as a string.
  * @throws Error if the deployment file or contract address is not found.

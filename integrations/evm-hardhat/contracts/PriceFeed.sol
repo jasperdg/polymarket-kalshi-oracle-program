@@ -11,6 +11,7 @@ import {SedaDataTypes} from "@seda-protocol/evm/contracts/libraries/SedaDataType
 
 /**
  * @title PriceFeed
+ * @author Open Oracle Association
  * @notice An example showing how to create and interact with SEDA network requests.
  * @dev This contract demonstrates basic SEDA request creation and result fetching.
  */

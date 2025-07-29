@@ -16,14 +16,14 @@
     "test": "hardhat test"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
-    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
-    "dotenv": "^16.5.0",
-    "hardhat": "^2.24.0",
-    "prettier": "^3.5.3",
-    "prettier-plugin-solidity": "^2.0.0",
+    "@biomejs/biome": "^2.1.2",
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "dotenv": "^17.2.1",
+    "hardhat": "^2.26.1",
+    "prettier": "^3.6.2",
+    "prettier-plugin-solidity": "^2.1.0",
     "rimraf": "^6.0.1",
-    "solhint": "^5.1.0"
+    "solhint": "^6.0.0"
   },
   "dependencies": {
     "@seda-protocol/evm": "1.0.0"

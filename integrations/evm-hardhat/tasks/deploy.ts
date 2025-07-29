@@ -4,8 +4,7 @@ import { createInterface } from 'node:readline';
 import MockSedaCore from '@seda-protocol/evm/artifacts/contracts/mocks/MockSedaCore.sol/MockSedaCore.json';
 import { type BytesLike, isAddress, isBytesLike } from 'ethers';
 import { priceFeedScope } from '.';
-import { getSedaConfig } from './utils';
-import { getOracleProgramId } from './utils';
+import { getOracleProgramId, getSedaConfig } from './utils';
 
 // Define a type for deployment info
 interface DeploymentInfo {
