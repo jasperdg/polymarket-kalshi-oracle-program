@@ -48,14 +48,14 @@ contract PriceFeed {
     function transmit(uint256 requestFee, uint256 resultFee, uint256 batchFee) external payable returns (bytes32) {
         SedaDataTypes.RequestInputs memory inputs = SedaDataTypes.RequestInputs(
             ORACLE_PROGRAM_ID, // execProgramId (Execution WASM binary ID)
-            bytes("eth-usdc"), // execInputs (Inputs for Execution WASM)
-            20000000000000, // execGasLimit
             ORACLE_PROGRAM_ID, // tallyProgramId (same as execProgramId in this example)
-            hex"00", // tallyInputs
-            20000000000000, // tallyGasLimit
-            1, // replicationFactor (number of required DR executors)
-            hex"00", // consensusFilter (set to `None`)
             2000, // gasPrice (SEDA tokens per gas unit)
+            10000000000000, // execGasLimit (within uint64 range)
+            10000000000000, // tallyGasLimit (within uint64 range)
+            1, // replicationFactor (number of required DR executors)
+            bytes("eth-usdc"), // execInputs (Inputs for Execution WASM)
+            hex"00", // tallyInputs
+            hex"00", // consensusFilter (set to `None`)
             abi.encodePacked(block.number) // memo (Additional public info)
         );
 

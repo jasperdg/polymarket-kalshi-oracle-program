@@ -4,7 +4,7 @@
     "": {
       "name": "seda-hardhat-starter-kit",
       "dependencies": {
-        "@seda-protocol/evm": "1.0.0-rc.6",
+        "@seda-protocol/evm": "1.0.0",
       },
       "devDependencies": {
         "@biomejs/biome": "^1.9.4",
@@ -185,9 +185,9 @@
 
     "@nomicfoundation/solidity-analyzer-win32-x64-msvc": ["@nomicfoundation/solidity-analyzer-win32-x64-msvc@0.1.2", "", {}, "sha512-Fdjli4DCcFHb4Zgsz0uEJXZ2K7VEO+w5KVv7HmT7WO10iODdU9csC2az4jrhEsRtiR9Gfd74FlG0NYlw1BMdyA=="],
 
-    "@openzeppelin/contracts": ["@openzeppelin/contracts@5.3.0", "", {}, "sha512-zj/KGoW7zxWUE8qOI++rUM18v+VeLTTzKs/DJFkSzHpQFPD/jKKF0TrMxBfGLl3kpdELCNccvB3zmofSzm4nlA=="],
+    "@openzeppelin/contracts": ["@openzeppelin/contracts@5.4.0", "", {}, "sha512-eCYgWnLg6WO+X52I16TZt8uEjbtdkgLC0SUX/xnAksjjrQI4Xfn4iBRoI5j55dmlOhDv1Y7BoR3cU7e3WWhC6A=="],
 
-    "@openzeppelin/contracts-upgradeable": ["@openzeppelin/contracts-upgradeable@5.3.0", "", { "peerDependencies": { "@openzeppelin/contracts": "5.3.0" } }, "sha512-yVzSSyTMWO6rapGI5tuqkcLpcGGXA0UA1vScyV5EhE5yw8By3Ewex9rDUw8lfVw0iTkvR/egjfcW5vpk03lqZg=="],
+    "@openzeppelin/contracts-upgradeable": ["@openzeppelin/contracts-upgradeable@5.4.0", "", { "peerDependencies": { "@openzeppelin/contracts": "5.4.0" } }, "sha512-STJKyDzUcYuB35Zub1JpWW58JxvrFFVgQ+Ykdr8A9PGXgtq/obF5uoh07k2XmFyPxfnZdPdBdhkJ/n2YxJ87HQ=="],
 
     "@pnpm/config.env-replace": ["@pnpm/config.env-replace@1.1.0", "", {}, "sha512-htyl8TWnKL7K/ESFa1oW2UB5lVDxuF5DpM7tBi6Hu2LNL3mWkIzNLG6N4zoCUP1lCKNxWy/3iu8mS8MvToGd6w=="],
 
@@ -201,7 +201,7 @@
 
     "@scure/bip39": ["@scure/bip39@1.1.1", "", { "dependencies": { "@noble/hashes": "~1.2.0", "@scure/base": "~1.1.0" } }, "sha512-t+wDck2rVkh65Hmv280fYdVdY25J9YeEUIgn2LG1WM6gxFkGzcksoDiUkWVpVp3Oex9xGC68JU2dSbUfwZ2jPg=="],
 
-    "@seda-protocol/evm": ["@seda-protocol/evm@1.0.0-rc.6", "", { "dependencies": { "@openzeppelin/contracts": "5.3.0", "@openzeppelin/contracts-upgradeable": "5.3.0" } }, "sha512-eiHaabDfbsTUXW2j0Pzg7BYfXx1Ngwj1F7s5fRmOvleCHpWpsLv/wLU6HwQGU6dReY6VaCg0wRGWFE0B58opuQ=="],
+    "@seda-protocol/evm": ["@seda-protocol/evm@1.0.0", "", { "dependencies": { "@openzeppelin/contracts": "5.4.0", "@openzeppelin/contracts-upgradeable": "5.4.0" } }, "sha512-indLOhmegQp2iORoNlvFtvOxGSO9+qBRIhdj33M9qN6YtwY6sZI+AV6e96GryrUNBM6wHJnWtI2X5Qws0X1xog=="],
 
     "@sentry/core": ["@sentry/core@5.30.0", "", { "dependencies": { "@sentry/hub": "5.30.0", "@sentry/minimal": "5.30.0", "@sentry/types": "5.30.0", "@sentry/utils": "5.30.0", "tslib": "^1.9.3" } }, "sha512-TmfrII8w1PQZSZgPpUESqjB+jC6MvZJZdLtE/0hZ+SrnKhW3x5WlYLvTXZpcWePYBku7rl2wn1RZu6uT0qCTeg=="],
 
