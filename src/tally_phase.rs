@@ -13,23 +13,29 @@ pub fn tally_phase() -> Result<()> {
 
     // Retrieve consensus reveals from the tally phase.
     let reveals = get_reveals()?;
-    let mut prices: Vec<u128> = Vec::new();
+    let mut prices: Vec<f64> = Vec::new();
 
-    // Iterate over each reveal, parse its content as an unsigned integer (u128), and store it in the prices array.
+    // Iterate over each reveal, parse its content as a floating-point number (f64), and store it in the prices array.
     for reveal in reveals {
-        let price_bytes_slice: [u8; 16] = match reveal.body.reveal.try_into() {
+        let price_str = match String::from_utf8(reveal.body.reveal) {
             Ok(value) => value,
             Err(_err) => {
                 // We should always handle a reveal body with care and not exit/panic when parsing went wrong
                 // It's better to skip that reveal
-                elog!("Reveal body could not be casted to u128");
+                elog!("Reveal body could not be converted to string");
                 continue;
             }
         };
 
-        let price = u128::from_le_bytes(price_bytes_slice);
-        log!("Received price: {}", price);
+        let price = match price_str.trim().parse::<f64>() {
+            Ok(value) => value,
+            Err(_err) => {
+                elog!("Reveal body could not be parsed as f64: {}", price_str);
+                continue;
+            }
+        };
 
+        log!("Received price: {}", price);
         prices.push(price);
     }
 
@@ -43,18 +49,17 @@ pub fn tally_phase() -> Result<()> {
     let final_price = median(prices);
 
     // Report the successful result in the tally phase, encoding the result as bytes.
-    // Encoding result with big endian to decode from EVM contracts.
-    Process::success(&final_price.to_be_bytes());
+    Process::success(&final_price.to_string().as_bytes());
 
     Ok(())
 }
 
-fn median(mut nums: Vec<u128>) -> u128 {
-    nums.sort();
+fn median(mut nums: Vec<f64>) -> f64 {
+    nums.sort_by(|a, b| a.partial_cmp(b).unwrap());
     let middle = nums.len() / 2;
 
     if nums.len() % 2 == 0 {
-        return (nums[middle - 1] + nums[middle]) / 2;
+        return (nums[middle - 1] + nums[middle]) / 2.0;
     }
 
     nums[middle]
