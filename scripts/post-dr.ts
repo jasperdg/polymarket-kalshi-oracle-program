@@ -16,7 +16,7 @@ async function main() {
             method: 'none'
         },
         execProgramId: process.env.ORACLE_PROGRAM_ID,
-        execInputs: Buffer.from('KXSB-26-BUF,540209'),
+        execInputs: Buffer.from('27824'),
         tallyInputs: Buffer.from([]),
         memo: Buffer.from(new Date().toISOString()),
     };

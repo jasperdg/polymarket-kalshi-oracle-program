@@ -7,128 +7,108 @@ use serde::{Deserialize, Serialize};
 // ============================================================================
 
 #[derive(Serialize, Deserialize)]
+struct PolyMarketEvent {
+    closed: bool,
+    markets: Vec<PolyMarketMarket>,
+}
+
+#[derive(Serialize, Deserialize)]
 struct PolyMarketMarket {
     #[serde(rename = "outcomePrices")]
     outcome_prices: String, // PolyMarket returns this as a JSON string, not an array
-    volume: String,
 }
 
-#[derive(Serialize, Deserialize)]
-struct KalshiMarket {
-    yes_bid_dollars: String,
-    volume: u64,
-}
 
 #[derive(Serialize, Deserialize)]
-struct KalshiMarketResponse {
-    market: KalshiMarket,
+struct Response {
+    prices: Vec<f64>,
+    market_status: String,
 }
 
 // ============================================================================
-// EXECUTION PHASE - FETCHES LIVE DATA FROM KALSHI & POLYMARKET - TAKES VOLUME WEIGHTED PRICE
+// EXECUTION PHASE - FETCHES LIVE DATA FROM POLYMARKET ONLY
 // ============================================================================
 
 /**
  * Executes the data request phase within the SEDA network.
- * This phase fetches price data from both Kalshi and PolyMarket for the same market,
- * then calculates a volume-weighted average price between the two platforms.
- * Currently works with binary prediction markets and focuses on the "yes" outcome price.
- * Returns the volume-weighted average price as the final result.
+ * This phase fetches event data from PolyMarket for a specific event.
+ * Takes a single input: event_id
+ * Loops through all markets in the event and extracts the first outcome price from each market.
+ * Returns a JSON response with a vector of first outcome prices and whether the event is closed.
  */
 pub fn execution_phase() -> Result<()> {
     // Retrieve the input parameters for the data request (DR).
-    // Expected to be a market identifier that works for both Kalshi and PolyMarket APIs.
+    // Expected to be a single event_id
     let dr_inputs_raw = String::from_utf8(Process::get_inputs())?;
-    let dr_inputs_trimmed = dr_inputs_raw.trim();
+    let event_id = dr_inputs_raw.trim();
 
-    let market_tickers: Vec<&str> = dr_inputs_trimmed.split(',').collect();
+    log!("Fetching event data from PolyMarket for event: {}", event_id);
 
-    log!("Fetching market data from Kalshi and PolyMarket for market: {} and {}", market_tickers[0], market_tickers[1]);
-
-    // Step 1: Fetch Kalshi market data (yes bid price and volume)
-    let kalshi_market_response = http_fetch(
-                format!("https://api.elections.kalshi.com/trade-api/v2/markets/{}", market_tickers[0]),
+    // Fetch PolyMarket event data
+    let polymarket_event_response = http_fetch(
+        format!("https://gamma-api.polymarket.com/events/{}", event_id),
         None,
     );
 
-
-    // Check if the market request was successful
-    if !kalshi_market_response.is_ok() {
+    // Check if the event request was successful
+    if !polymarket_event_response.is_ok() {
         elog!(
-            "market HTTP Response was rejected: {} - {}",
-            kalshi_market_response.status,
-            String::from_utf8(kalshi_market_response.bytes)?
+            "PolyMarket HTTP Response was rejected: {} - {}",
+            polymarket_event_response.status,
+            String::from_utf8(polymarket_event_response.bytes)?
         );
-        Process::error("Error while fetching market information".as_bytes());
+        Process::error("Error while fetching PolyMarket event information".as_bytes());
         return Ok(());
     }
     
+    // Parse event information
+    let poly_market_event_data = serde_json::from_slice::<PolyMarketEvent>(&polymarket_event_response.bytes)?;
     
-    // Parse market informationmarket_response
-    let kalshi_market_data = serde_json::from_slice::<KalshiMarketResponse>(&kalshi_market_response.bytes)?;
-    log!(
-        "Fetched Kalshi Price (YES BID): {} cents with volume {}",
-        kalshi_market_data.market.yes_bid_dollars,
-        kalshi_market_data.market.volume
-    );
-
-    let kalshi_yes_bid_dollars = kalshi_market_data.market.yes_bid_dollars.parse::<f64>()?;
-
-
-    // Step 2: Fetch PolyMarket market data (yes outcome price and volume)
-    let polymarket_market_response = http_fetch(
-                format!("https://gamma-api.polymarket.com/markets/{}", market_tickers[1]),
-        None,
-    );
-
-
-    // Check if the market request was successful
-    if !polymarket_market_response.is_ok() {
-        elog!(
-            "market HTTP Response was rejected: {} - {}",
-            polymarket_market_response.status,
-            String::from_utf8(polymarket_market_response.bytes)?
-        );
-        Process::error("Error while fetching market information".as_bytes());
+    // Validate that the event has at least one market
+    if poly_market_event_data.markets.is_empty() {
+        elog!("Event has no markets available");
+        Process::error("Error: Event has no markets".as_bytes());
         return Ok(());
     }
     
-    // Parse market informationmarket_response
-    let poly_market_market_data = serde_json::from_slice::<PolyMarketMarket>(&polymarket_market_response.bytes)?;
-    let outcome_prices_array: Vec<String> = serde_json::from_str(&poly_market_market_data.outcome_prices)?;
-    let polymarket_yes_price = outcome_prices_array[0].parse::<f64>()?; // 0 = yes price
-
-    log!(
-        "Fetched Price (YES PRICE): {} cents with volume {}",
-        polymarket_yes_price,
-        poly_market_market_data.volume
-    );
-
-
-    let poly_market_volume = poly_market_market_data.volume.parse::<f64>()?;
-
-    // Step 3: Calculate volume-weighted average price between Kalshi and PolyMarket
-    let total_volume = kalshi_market_data.market.volume as f64 + poly_market_volume;
+    // Loop through all markets and extract the first outcome price from each
+    let mut yes_prices: Vec<f64> = Vec::new();
     
-    if total_volume == 0.0 {
-        elog!("Total volume is zero, cannot calculate volume weighted average price");
-        Process::error("Error: Total volume is zero".as_bytes());
-        return Ok(());
+    for (i, market) in poly_market_event_data.markets.iter().enumerate() {
+        // Parse the outcome_prices JSON string into a vector
+        let outcome_prices_array: Vec<String> = serde_json::from_str(&market.outcome_prices)?;
+        
+        if outcome_prices_array.is_empty() {
+            elog!("Market {} has no outcome prices", i);
+            continue;
+        }
+        
+        // Get the first outcome price and parse it as f64
+        let yes_price = outcome_prices_array[0].parse::<f64>().map_err(|e| {
+            elog!("Failed to parse first outcome price for market {}: {}", i, e);
+            anyhow::anyhow!("Invalid price format")
+        })?;
+        
+        yes_prices.push(yes_price);
+        log!("Market {}: First outcome price = {}", i, yes_price);
     }
 
-    // Calculate weighted prices: price × volume for each platform
-    let kalshi_weighted_price = kalshi_yes_bid_dollars * (kalshi_market_data.market.volume as f64);
-    let polymarket_weighted_price = polymarket_yes_price * poly_market_volume;
-
-    // Final volume-weighted average: (sum of weighted prices) / (total volume)
-    let volume_weighted_average_price = (kalshi_weighted_price + polymarket_weighted_price) / total_volume;
-
     log!(
-        "Volume Weighted Average Price: {:.8} cents",
-        volume_weighted_average_price
+        "Collected {} first outcome prices from all markets",
+        yes_prices.len()
     );
 
-    // Return the volume-weighted average price as the execution result
-    Process::success(volume_weighted_average_price.to_string().as_bytes());
+    let market_status = if poly_market_event_data.closed {
+        "closed".to_string()
+    } else {
+        "open".to_string()
+    };
+
+
+    // Return the PolyMarket first outcome prices and event status as JSON
+    Process::success(&serde_json::to_vec(&Response {
+        prices: yes_prices,
+        market_status: market_status,
+    })?);
     Ok(())
 }
